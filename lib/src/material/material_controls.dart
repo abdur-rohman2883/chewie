@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/src/models/subtitle_model.dart';
+import 'package:flutter/services.dart';
 
 import 'widgets/playback_speed_dialog.dart';
 
@@ -76,6 +77,7 @@ class _MaterialControlsState extends State<MaterialControls>
           absorbing: notifier.hideStuff,
           child: Stack(
             children: [
+              _buildTopBar(),
               if (_latestValue.isBuffering)
                 const Center(
                   child: CircularProgressIndicator(),
@@ -330,6 +332,56 @@ class _MaterialControlsState extends State<MaterialControls>
         ),
       ),
     );
+  }
+
+  //our top bar
+  Widget _buildTopBar(
+      // Color backgroundColor,
+      // Color iconColor,
+      // double barHeight,
+      // double buttonPadding,
+      ) {
+    return Container(
+      height: barHeight,
+      margin: EdgeInsets.only(
+        top: marginSize,
+        right: marginSize,
+        left: marginSize,
+      ),
+      child: AnimatedOpacity(
+        opacity: notifier.hideStuff ? 0.0 : 1.0,
+        duration: const Duration(milliseconds: 300),
+        child: Container(
+          height: barHeight,
+          margin: const EdgeInsets.only(right: 12.0),
+          padding: const EdgeInsets.only(
+            left: 8.0,
+            right: 8.0,
+          ),
+          child: Row(
+            children: <Widget>[
+              SizedBox(width: MediaQuery.of(context).size.height * 0.1),
+              IconButton(
+                  icon: const Icon(Icons.arrow_back_ios),
+                  color: Colors.white70,
+                  onPressed: exitAndBack),
+              Text(
+                chewieController.title,
+                style: const TextStyle(color: Colors.white70, fontSize: 20),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void exitAndBack() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        chewieController.fromRoute ?? "",
+        ModalRoute.withName(chewieController.fromRoute ?? ""));
+    Navigator.of(context).pop();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
   Widget _buildHitArea() {

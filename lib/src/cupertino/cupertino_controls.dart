@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/src/models/subtitle_model.dart';
+import 'package:flutter/services.dart';
 
 class CupertinoControls extends StatefulWidget {
   const CupertinoControls({
@@ -538,16 +539,33 @@ class _CupertinoControlsState extends State<CupertinoControls>
       ),
       child: Row(
         children: <Widget>[
-          if (chewieController.allowFullScreen)
-            _buildExpandButton(
-                backgroundColor, iconColor, barHeight, buttonPadding),
-          const Spacer(),
-          if (chewieController.allowMuting)
-            _buildMuteButton(controller, backgroundColor, iconColor, barHeight,
-                buttonPadding),
+          SizedBox(width: MediaQuery.of(context).size.height * 0.1),
+          IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              color: Colors.white70,
+              onPressed: exitAndBack),
+          Text(
+            chewieController.title,
+            style: const TextStyle(color: Colors.white70, fontSize: 20),
+          )
+          // if (chewieController.allowFullScreen)
+          //   _buildExpandButton(
+          //       backgroundColor, iconColor, barHeight, buttonPadding),
+          // const Spacer(),
+          // if (chewieController.allowMuting)
+          //   _buildMuteButton(controller, backgroundColor, iconColor, barHeight,
+          //       buttonPadding),
         ],
       ),
     );
+  }
+
+  void exitAndBack() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        chewieController.fromRoute ?? "",
+        ModalRoute.withName(chewieController.fromRoute ?? ""));
+    Navigator.of(context).pop();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
   void _cancelAndRestartTimer() {
