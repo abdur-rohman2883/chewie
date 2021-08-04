@@ -110,29 +110,29 @@ class ChewieState extends State<Chewie> {
     return WillPopScope(
         onWillPop: () async {
           exitAndBack();
-          return Future<bool>.value(false);
+          return Future<bool>.value(true);
         },
         child: Scaffold(
-          appBar: AppBar(
-            iconTheme:
-                const IconThemeData(color: Color.fromRGBO(255, 255, 255, 1.0)),
-            actionsIconTheme:
-                const IconThemeData(color: Color.fromRGBO(255, 255, 255, 1.0)),
-            automaticallyImplyLeading: true,
-            elevation: 0.1,
-            backgroundColor: const Color.fromRGBO(0, 0, 0, 1.0),
-            title: Text(
-              widget.controller.title,
-              style: const TextStyle(
-                  fontFamily: "MMCOFFICE-Regular", fontWeight: FontWeight.w700),
-            ),
-            leading: IconButton(
-              onPressed: () {
-                exitAndBack();
-              },
-              icon: const Icon(Icons.arrow_back),
-            ),
-          ),
+          // appBar: AppBar(
+          //   iconTheme:
+          //       const IconThemeData(color: Color.fromRGBO(255, 255, 255, 1.0)),
+          //   actionsIconTheme:
+          //       const IconThemeData(color: Color.fromRGBO(255, 255, 255, 1.0)),
+          //   automaticallyImplyLeading: true,
+          //   elevation: 0.1,
+          //   backgroundColor: const Color.fromRGBO(0, 0, 0, 1.0),
+          //   title: Text(
+          //     widget.controller.title,
+          //     style: const TextStyle(
+          //         fontFamily: "MMCOFFICE-Regular", fontWeight: FontWeight.w700),
+          //   ),
+          //   leading: IconButton(
+          //     onPressed: () {
+          //       exitAndBack();
+          //     },
+          //     icon: const Icon(Icons.arrow_back),
+          //   ),
+          // ),
           resizeToAvoidBottomInset: false,
           body: Container(
             alignment: Alignment.center,

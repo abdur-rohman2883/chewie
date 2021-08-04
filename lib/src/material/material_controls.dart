@@ -77,14 +77,12 @@ class _MaterialControlsState extends State<MaterialControls>
           absorbing: notifier.hideStuff,
           child: Stack(
             children: [
-              _buildTopBar(),
               if (_latestValue.isBuffering)
                 const Center(
                   child: CircularProgressIndicator(),
                 )
               else
                 _buildHitArea(),
-              _buildActionBar(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
@@ -98,6 +96,8 @@ class _MaterialControlsState extends State<MaterialControls>
                   _buildBottomBar(context),
                 ],
               ),
+              _buildTopBar(),
+              // _buildActionBar(),
             ],
           ),
         ),
@@ -132,24 +132,24 @@ class _MaterialControlsState extends State<MaterialControls>
     super.didChangeDependencies();
   }
 
-  Widget _buildActionBar() {
-    return Positioned(
-      top: 0,
-      right: 0,
-      child: SafeArea(
-        child: AnimatedOpacity(
-          opacity: notifier.hideStuff ? 0.0 : 1.0,
-          duration: const Duration(milliseconds: 250),
-          child: Row(
-            children: [
-              _buildSubtitleToggle(),
-              if (chewieController.showOptions) _buildOptionsButton(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildActionBar() {
+  //   return Positioned(
+  //     top: 0,
+  //     right: 0,
+  //     child: SafeArea(
+  //       child: AnimatedOpacity(
+  //         opacity: notifier.hideStuff ? 0.0 : 1.0,
+  //         duration: const Duration(milliseconds: 250),
+  //         child: Row(
+  //           children: [
+  //             _buildSubtitleToggle(),
+  //             if (chewieController.showOptions) _buildOptionsButton(),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildOptionsButton() {
     final options = <OptionItem>[
@@ -341,36 +341,38 @@ class _MaterialControlsState extends State<MaterialControls>
       // double barHeight,
       // double buttonPadding,
       ) {
-    return Container(
+    return SizedBox(
       height: barHeight,
-      margin: EdgeInsets.only(
-        top: marginSize,
-        right: marginSize,
-        left: marginSize,
-      ),
+      width: double.maxFinite,
       child: AnimatedOpacity(
         opacity: notifier.hideStuff ? 0.0 : 1.0,
         duration: const Duration(milliseconds: 300),
-        child: Container(
-          height: barHeight,
-          margin: const EdgeInsets.only(right: 12.0),
-          padding: const EdgeInsets.only(
-            left: 8.0,
-            right: 8.0,
-          ),
-          child: Row(
-            children: <Widget>[
-              SizedBox(width: MediaQuery.of(context).size.height * 0.1),
-              IconButton(
-                  icon: const Icon(Icons.arrow_back_ios),
-                  color: Colors.white70,
-                  onPressed: exitAndBack),
-              Text(
-                chewieController.title,
-                style: const TextStyle(color: Colors.white70, fontSize: 20),
-              )
-            ],
-          ),
+        child: Row(
+          children: <Widget>[
+            const SizedBox(width: 8),
+            IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                color: Colors.white70,
+                splashRadius: 24,
+                onPressed: exitAndBack),
+            Text(
+              chewieController.title,
+              style: const TextStyle(color: Colors.white70, fontSize: 20),
+            ),
+            Expanded(
+              child: AnimatedOpacity(
+                opacity: notifier.hideStuff ? 0.0 : 1.0,
+                duration: const Duration(milliseconds: 250),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    _buildSubtitleToggle(),
+                    if (chewieController.showOptions) _buildOptionsButton(),
+                  ],
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
